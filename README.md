@@ -20,6 +20,7 @@ Next clone the tensorflow git repository. This is so that you can retrain and cr
 Once you're done, you need to build the Inception tensorflow binary for the first time, trained on imagenet images. To do this, 
 
 >brew install bazel
+
 >bazel build tensorflow/examples/image_retraining:retrain
 
 (This will take atleast 20 - 30 minutes, computing power notwithstanding. For additional details : https://www.tensorflow.org/tutorials/image_retraining)
