@@ -58,6 +58,7 @@ You should see the server running with the last line saying 'waiting for connect
 Next you need to start the backend server. To do this : 
 
 >cd Scripts
+
 >python app.py
 
 This should start a server in localhost:5000. If it works correctly the message should be : Debugger is active!
