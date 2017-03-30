@@ -48,22 +48,23 @@ def text_bounding(directory,file_name ):
     # write original image with added contours to disk  
     cv2.imwrite(directory+"/"+file_name, img)
 
-root_directory = "/Users/vinodhkris/Desktop/Pet_Projects/Memer/actors/"
-maps = {}
-actors = ["training"]
-for actor in actors:
-	directory = root_directory + actor
-	for filename in os.listdir(directory):
-		if "jpg" not in filename:
-			continue
-		key = actor + ":"+filename
-		if key not in maps:
-			maps[key] = []
-		convert_to_greyscale(directory,filename)
-		image = Image.open(directory+"/"+filename)
-		print tesserocr.image_to_text(image) 
-		maps[key].append(tesserocr.image_to_text(image))
+def get_text(directory,filename):
+	image = Image.open(directory+"/"+filename)
+	return tesserocr.image_to_text(image) 
 
 
-for key in maps:
-	print key,maps[key]
+if __name__ == "__main__":
+	root_directory = "/Users/vinodhkris/Desktop/Pet_Projects/Memer/actors/"
+	actors = ["training"]
+	for actor in actors:
+		directory = root_directory + actor
+        files = os.listdir(directory)
+        for filename in files:
+            convert_to_greyscale(directory,filename)
+
+        for filename in os.listdir(directory):
+			if "jpg" not in filename:
+				continue
+			key = actor + ":"+filename
+			image = Image.open(directory+"/"+filename)
+			print tesserocr.image_to_text(image) 
