@@ -61,9 +61,9 @@ Next you need to start the backend server. To do this :
 
 >python app.py
 
-This should start a server in localhost:5000. If it works correctly the message should be : Debugger is active!
+This should start a server in localhost:5000. If it works correctly the message should be : ""Debugger is active!""
 
-Once you're here, you can actually run your meme searches. Open a new tab in the browser and go to http://localhost:5000/ . This should show you a message saying 'hello world'. To search type http://localhost:5000/main/api/v1.0/memes?text=<insert_senseless_meme_text>&actor=<insert_actor_name>. This should show you a list of json objects with information on top memes matching your search query, with the image name as one of the fields . If you get an empty list, see the next section. 
+Once you're here, you can actually run your meme searches. Open a new tab in the browser and go to http://localhost:5000/ . This should show you a message saying ""Hello world"". To search type http://localhost:5000/main/api/v1.0/memes?text=<insert_senseless_meme_text>&actor=<insert_actor_name>. This should show you a list of json objects with information on top memes matching your search query, with the image name as one of the fields . If you get an empty list, see the next section. 
 
 Populating data
 
@@ -71,5 +71,5 @@ Once you have a working system, you can populate your mongodb with memes so that
 
 >python insert_memes.py -i <root_directory_with_memes_to_add>
 
-This should take some time and show you some random outputs with your labels. Once it's all run you should see the message : All memes inserted. Vanakkam Mahan. 
+This should take some time and show you some random outputs with your labels. Once it's all run you should see the message : ""All memes inserted. Vanakkam Mahan"". 
 Now you can go back to searching and making 130 crores and 76 million meme references.
