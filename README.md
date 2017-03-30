@@ -1,6 +1,6 @@
 Memebot 1.0
 
-Memebot 1.0 is a search engine for memes that you can train and use while making some dank meme references. 
+Memebot 1.0 is an open source search engine for memes that you can train and use for making some dank ass meme references. 
 
 Memebot 1.0 works with 2 main components : 
 1. text to image 
