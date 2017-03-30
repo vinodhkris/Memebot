@@ -4,9 +4,8 @@ This repo contains the models and scripts that were used to build the meme recog
 Memebot 1.0
 
 Memebot 1.0 works with 2 main components : 
-1. text to image (to capture the eloquence of the meme creator)
+1. text to image 
 2. actor recognition 
-3. dank tamil memes
 
 Training
 
