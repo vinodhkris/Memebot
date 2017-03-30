@@ -46,7 +46,9 @@ To run, you need to setup a few things.
 You need to setup a MongoDb in your system. To do that : 
 
 >brew install mongodb
+
 >sudo mkdir -p /data/db
+
 >sudo chmod +x /data/db
 
 Now you've setup mongodb. Next we need to start the mongo server. To do this:
