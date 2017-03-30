@@ -38,6 +38,10 @@ if __name__ == "__main__":
 		if "jpg" not in filename:
 			continue
 		admitit.convert_to_greyscale(root_directory,filename)
+
+	#Run tensorflow on all images directly
+	tf_actors = thatguy.run_inference_on_images(root_directory)
+	print 'Finished running tf on all images'
 	for filename in os.listdir(root_directory):
 		if "jpg" not in filename:
 			continue
@@ -46,13 +50,13 @@ if __name__ == "__main__":
 		description = description.strip()
 		description = out = "".join(c for c in description if c not in ('!','.',':',',',"'"))
 		description = description.lower().replace('\n',' ')
-		#run tensorflow
-		imagePath = root_directory + "/" + filename
-		actor = thatguy.run_inference_on_image(imagePath)
+		#get labels from tensorflow
+		actor = tf_actors[filename]
 		#insert_many in mongoob
 		descriptions.append(description)
 		actors.append(actor)
 		image_names.append(filename)
+		print filename,'done. Description:',description
 	db.insert_bulk(descriptions,actors,image_names)
 	print 'All memes inserted. Vanakkam Mahan.'
 		
