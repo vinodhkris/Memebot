@@ -1,7 +1,6 @@
-This repo contains the models and scripts that were used to build the meme recognition bot.
-
-
 Memebot 1.0
+
+Memebot 1.0 is a search engine for memes that you can train and use while making some dank meme references. 
 
 Memebot 1.0 works with 2 main components : 
 1. text to image 
