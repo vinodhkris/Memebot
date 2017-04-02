@@ -46,9 +46,9 @@ for i , (img , Type) in enumerate( ActualImages):
         cntr = len([i for i in os.listdir(DIR) if image_type in i]) + 1
         print cntr
         if len(Type)==0:
-            f = open(os.path.join(DIR , image_type + "_"+ str(cntr)+".jpg"), 'wb')
+            f = open(os.path.join(DIR , image_type + "_" + query + "_" + str(cntr)+".jpg"), 'wb')
         else :
-            f = open(os.path.join(DIR , image_type + "_"+ str(cntr)+"."+Type), 'wb')
+            f = open(os.path.join(DIR , image_type + "_" + query + "_" + str(cntr)+"."+Type), 'wb')
 
 
         f.write(raw_img)

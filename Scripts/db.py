@@ -26,3 +26,6 @@ class MongoObj:
         results = self.collection.find({'$text': {'$search': description+" "+actor}}, {'score': {'$meta': 'textScore'}})
         results = results.sort([( 'score', { '$meta': "textScore" } )])
         return dumps(results)
+
+    def clear_db(self):
+        self.collection.remove({})
