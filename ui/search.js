@@ -5,13 +5,13 @@
             terms = $('#terms').val();
             actors = $('#actors').val();
             default_path = $('#defaultpath').val();
-            etsyURL = "http://localhost:5000/main/api/v1.0/memes?text="+terms+"&actor="+ actors;
+            URL = "http://localhost:5000/main/api/v1.0/memes?text="+terms+"&actor="+ actors;
 
             $('#results').empty();
             $('<p></p>').text('Searching for '+terms+' and ' + actors).appendTo('#results');
 
             $.ajax({
-                url: etsyURL,
+                url: URL,
                 success: function(data) {
                     if (data) {
                         $('#results').empty();
