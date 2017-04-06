@@ -74,3 +74,24 @@ Once you have a working system, you can populate your mongodb with memes so that
 
 This should take some time and show you some random outputs with your labels. Once it's all run you should see the message : ""All memes inserted. Vanakkam Mahan"". 
 Now you can go back to searching and making 130 crores and 76 million meme references.
+
+UI
+
+To run the UI for Memebot, go to the UI directory and start a server. The simplest way to start a server is
+> python -m SimpleHTTPServer <port>
+
+Then go to localhost:<port> and you should be able to see the ui. 
+
+
+FAQs
+1. The UI shows up, but when I search for something, I do not see the results. Why?
+
+A: To do this, you need to ensure 2 things.
+1. The mongo server is running (mongod)
+2. The backend server is running (python app.py)
+
+Even after this if you do not see results, then the issue is most likely caused by CORS. To confirm this, open up the console and then search for something, you should see an error like this 
+> XMLHttpRequest cannot load http://cl.ly/2wr4. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'localhost:4001' is therefore not allowed access.
+
+This is basically due to the fact that chrome (and most other browsers) do not allow a localhosted ui to communicate with a localhosted backend (because communism) . So to get around this, you can either use firefox and die or install this extension: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en and enable it while searching in MemebotUI, like a normal person. 
+
