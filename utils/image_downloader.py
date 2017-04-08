@@ -20,6 +20,22 @@ def DetectFace(image, faceCascade, returnImage=False):
     else:
         return faces
 
+def get_args(argv):
+    inputfile = ''
+    try:
+        opts, args = getopt.getopt(argv,"hi:o:",["ifile="])
+    except getopt.GetoptError:
+        print 'image_downloader.py -i <inputfile>'
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print 'image_downloader.py -i <inputfile>'
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            inputfile = arg
+    
+    return inputfile
+
 def get_soup(url,header):
     return BeautifulSoup(urllib2.urlopen(urllib2.Request(url,headers=header)),'html.parser')
 
