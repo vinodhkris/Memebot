@@ -48,7 +48,8 @@ if __name__ == "__main__":
 	#db.clear_db()           #uncomment only if you want to clear the database
 	#create cropped and grayscale images
 	files = os.listdir(root_directory)
-	faceCascade = cv2.CascadeClassifier('/Users/vinodhkris/Desktop/Pet_Projects/Memebot/Scripts/faceDetection/haarcascade_frontalface_default.xml')
+	pathname = os.path.dirname(sys.argv[0]) 
+	faceCascade = cv2.CascadeClassifier(pathname+'/faceDetection/haarcascade_frontalface_default.xml')
 	for filename in files:
 		if "jpg" not in filename:
 			continue
