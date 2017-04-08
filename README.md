@@ -45,6 +45,12 @@ Now you can retrain the last layer of Inception that is just created with your m
 
 Once this is done, you're done with the first part, training a tensorflow model. 
 
+If you encounter an error like this 
+
+> Not a JPEG file: starts with 0x3c 0x21
+
+Just delete the last file it was processing before it errored out and restart it, it will continue from where it errored out.
+
 Running
 
 Setup
