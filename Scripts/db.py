@@ -11,6 +11,9 @@ class MongoObj:
         self.collection.drop_index("text")
         self.collection.create_index([("description",pymongo.TEXT),("actor",pymongo.TEXT)], name="text", default_language="english")
 
+    def number_of_docs(self):
+        return dumps(self.collection.count())
+
     def insert_doc(self,text,actor,image_name):
         self.collection.insert({"description":text, "actor":actor, "image_name":image_name})
         return 1

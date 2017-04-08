@@ -45,14 +45,14 @@ if __name__ == "__main__":
 		root_directory += "/"
 	file_maps = {}      #will contain all info for a file name
 	db = MongoObj()
-	#db.clear_db()
+	#db.clear_db()           #uncomment only if you want to clear the database
 	#create cropped and grayscale images
 	files = os.listdir(root_directory)
+	faceCascade = cv2.CascadeClassifier('/Users/vinodhkris/Desktop/Pet_Projects/Memebot/Scripts/faceDetection/haarcascade_frontalface_default.xml')
 	for filename in files:
 		if "jpg" not in filename:
 			continue
 		im1 = admitit.convert_to_greyscale(root_directory,filename)
-		faceCascade = cv2.CascadeClassifier('/Users/vinodhkris/Desktop/Pet_Projects/Memebot/Scripts/faceDetection/haarcascade_frontalface_default.xml')
         faces=DetectFace(im1,faceCascade)
         n = 0 
         for (x,y,w,h) in faces:

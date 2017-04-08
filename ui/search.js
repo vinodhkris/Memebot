@@ -1,6 +1,23 @@
 (function($){
 
     $(document).ready(function(){
+        $(function() {
+            URL = "http://localhost:5000/main/api/v1.0/memes/size";
+             $.ajax({
+                url: URL,
+                success: function(data) {
+                    if (data) {
+                        $('#number').empty();
+                        result = jQuery.parseJSON( data );
+                        console.log(result);
+                        $('<p></p>').text('Now has '+result+' Memes! Getting updated daily!').appendTo('#number');
+
+                    } else {
+                        $('#number').empty();
+                    }
+                }
+            });
+    });
         $('#search').bind('submit', function() {
             terms = $('#terms').val();
             actors = $('#actors').val();
@@ -33,9 +50,10 @@
                     }
                 }
             });
-
             return false;
         })
     });
+
+
 
 })(jQuery);

@@ -16,5 +16,10 @@ def getMemes():
     m = MongoObj()
     return m.find_doc(text,actor)
 
+@app.route('/main/api/v1.0/memes/size', methods=['GET'])
+def getNumberOfMemes():
+    m = MongoObj()
+    return m.number_of_docs()
+
 if __name__ == '__main__':
     app.run(debug=True)
