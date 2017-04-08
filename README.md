@@ -6,6 +6,17 @@ Memebot 1.0 works with 2 main components :
 1. text to image 
 2. actor recognition 
 
+Creating a training set
+
+This project assumes you have a dataset of meme images to choose from. In case you don't, you can create a set.
+utils/ has a script called image_downloader.py that creates an initial training set by downloading images off google and then creating grayscale copies as well as cropped images of the face.
+
+>cd utils/
+
+>python image_downloader.py -i <destination_path>
+
+The data can then be seen in <destination_path>/actors.
+
 Training
 
 The first step to running this project is to retrain the pre-trained tensor flow model with your favourite memes. To do this, install tensorflow using pip. 
@@ -26,9 +37,11 @@ Once you're done, you need to build the Inception tensorflow binary for the firs
 (This will take atleast 20 - 30 minutes, computing power notwithstanding. For additional details : https://www.tensorflow.org/tutorials/image_retraining)
 Now you can retrain the last layer of Inception that is just created with your memes. To do that : 
 
+>cd tensorflow
+
 >bazel-bin/tensorflow/examples/image_retraining/retrain --image_dir ~/memes
 
-(Arrange your memes directory, such that you have different subfolders each with a label indicating what the images inside it are. The labels could be anything, for instance, actors.)
+(Arrange your memes directory, such that you have different subfolders each with a label indicating what the images inside it are. The labels could be anything, for instance, actors.) 
 
 Once this is done, you're done with the first part, training a tensorflow model. 
 
@@ -58,7 +71,7 @@ You should see the server running with the last line saying 'waiting for connect
 
 Next you need to start the backend server. To do this : 
 
->cd Scripts
+>cd backend
 
 >python app.py
 
@@ -70,7 +83,7 @@ Populating data
 
 Once you have a working system, you can populate your mongodb with memes so that you can search them. This is important, because otherwise your searches would likely return empty. To do this: 
 
->python insert_memes.py -i <root_directory_with_memes_to_add>
+>python backend/insert_memes.py -i <root_directory_with_memes_to_add>
 
 This should take some time and show you some random outputs with your labels. Once it's all run you should see the message : ""All memes inserted. Vanakkam Mahan"". 
 Now you can go back to searching and making 130 crores and 76 million meme references.
