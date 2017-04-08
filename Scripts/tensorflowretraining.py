@@ -88,7 +88,8 @@ def run_inference_on_images(directory):
     create_graph()
     with tf.Session() as sess:
         softmax_tensor = sess.graph.get_tensor_by_name('final_result:0')
-        for filename in os.listdir(directory):
+        files = os.listdir(directory)
+        for filename in files:
             answer = None
             if "jpg" not in filename:
                 continue
@@ -111,7 +112,7 @@ def run_inference_on_images(directory):
                 score = predictions[node_id]
                 print('%s (score = %.5f)' % (human_string, score))
 
-            answer = labels[top_k[0]]+" "+labels[top_k[1]]     #top 2 actors
+            answer = labels[top_k[0]]    #top 2 actors
             answers[filename] = answer
         return answers
 

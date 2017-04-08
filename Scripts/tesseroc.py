@@ -4,10 +4,10 @@ import os
 import cv2
 
 def convert_to_greyscale(directory,filename):
-	print directory,filename
-	img = cv2.imread( directory+"/"+filename )
-	img = cv2.cvtColor( img, cv2.COLOR_RGB2GRAY )
-	cv2.imwrite( directory+"/"+filename.split(".jpg")[0]+"_grayscale.jpg", img )
+    img = cv2.imread( directory+"/"+filename )
+    img = cv2.cvtColor( img, cv2.COLOR_RGB2GRAY )
+    cv2.imwrite( directory+"/"+filename.split(".jpg")[0]+"_grayscale.jpg", img )
+    return img
 
 def text_bounding(directory,file_name ):
     img  = cv2.imread(directory+"/"+file_name)

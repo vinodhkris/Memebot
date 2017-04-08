@@ -7,37 +7,14 @@ from db import MongoObj
 import os
 import string
 import re
+import cv2
+import numpy as np
 #import cv
 #from PIL import Image
 
 def DetectFace(image, faceCascade, returnImage=False):
-    # This function takes a grey scale cv image and finds
-    # the patterns defined in the haarcascade function
-    # modified from: http://www.lucaamore.com/?p=638
-
-    #variables    
-    min_size = (20,20)
-    haar_scale = 1.1
-    min_neighbors = 3
-    haar_flags = 0
-
-    # Equalize the histogram
-    cv.EqualizeHist(image, image)
-
     # Detect the faces
-    faces = cv.HaarDetectObjects(
-            image, faceCascade, cv.CreateMemStorage(0),
-            haar_scale, min_neighbors, haar_flags, min_size
-        )
-
-    # If faces are found
-    if faces and returnImage:
-        for ((x, y, w, h), n) in faces:
-            # Convert bounding box to two CvPoints
-            pt1 = (int(x), int(y))
-            pt2 = (int(x + w), int(y + h))
-            cv.Rectangle(image, pt1, pt2, cv.RGB(255, 0, 0), 5, 8, 0)
-
+    faces = faceCascade.detectMultiScale(image, 1.3, 5)
     if returnImage:
         return image
     else:
@@ -66,36 +43,29 @@ if __name__ == "__main__":
 		sys.exit(2)
 	if not root_directory.endswith("/"):
 		root_directory += "/"
-	maps = {}
-	descriptions = []
-	actors = []
-	image_names = []
+	file_maps = {}      #will contain all info for a file name
 	db = MongoObj()
-	db.clear_db()
+	#db.clear_db()
+	#create cropped and grayscale images
 	files = os.listdir(root_directory)
 	for filename in files:
 		if "jpg" not in filename:
 			continue
-		admitit.convert_to_greyscale(root_directory,filename)
-#		faceCascade = cv.Load('/Users/Akshay/Desktop/classifier/meme_bot/opencv.git/branches/2.4/data/haarcascades/haarcascade_frontalface_default.xml')
-#		pil_im=Image.open(root_directory + filename)
-#       cv_im=pil2cvGrey(pil_im)
-#        faces=DetectFace(cv_im,faceCascade)
-#        if faces:
-#            n=1
-#            for face in faces:
-#                croppedImage=imgCrop(pil_im, face[0],boxScale=boxScale)
-#                fname,ext=os.path.splitext(img)
-#                croppedImage.save(root_directory + "faces/" + fname+'_crop'+str(n)+ext)
-#                n+=1
-#        else:
-#            print 'No faces found:', img
-
+		im1 = admitit.convert_to_greyscale(root_directory,filename)
+		faceCascade = cv2.CascadeClassifier('/Users/vinodhkris/Desktop/Pet_Projects/Memebot/Scripts/faceDetection/haarcascade_frontalface_default.xml')
+        faces=DetectFace(im1,faceCascade)
+        n = 0 
+        for (x,y,w,h) in faces:
+            crop_img = im1[y:y+h, x:x+w] # Crop from x, y, w, h -> 100, 200, 300, 400
+            cv2.imwrite( root_directory+"/"+filename.split(".jpg")[0]+"_crop"+str(n)+".jpg", crop_img )
+            n+=1
 
 	#Run tensorflow on all images directly
 	tf_actors = thatguy.run_inference_on_images(root_directory)
 	print 'Finished running tf on all images'
-	for filename in os.listdir(root_directory):
+	files = os.listdir(root_directory)
+	#get all descriptions and actors for images
+	for filename in files:
 		if "jpg" not in filename:
 			continue
 		#run tesseract
@@ -103,27 +73,34 @@ if __name__ == "__main__":
 		description = description.strip()
 		description = out = "".join(c for c in description if c not in ('!','.',':',',',"'"))
 		description = description.lower().replace('\n',' ')
-
-		non_grayscale_filename = re.sub('\_grayscale$','', filename)
-		
 		#insert_many in mongoob
 	    #get labels from tensorflow
 		actor = tf_actors[filename]
-		#do not insert multiple entries for grayscale versions of same file. Just append to the existing entry
-		if non_grayscale_filename in image_names:
-			index = image_names.index(non_grayscale_filename)
-			descriptions[index].append(description)
+		#do not insert multiple entries 
+		#for grayscale versions of same file. Just append to the existing entry
+		f = filename.replace("_grayscale","").replace("_crop\d","")
+		if f in file_maps:
+			file_maps[f]["actor"] = file_maps[f]["actor"] +" "+actor
+			file_maps[f]["description"] = file_maps[f]["description"] +" "+description
 		else:
-			descriptions.append(description)
+			file_maps[f] = {}
+			file_maps[f]["actor"] = actor
+			file_maps[f]["description"] = description
 
-		if 'grayscale' not in filename:
-			actors.append(actor)
-			image_names.append(non_grayscale_filename)
-		else:
+		if 'grayscale' in filename or "crop" in filename:
 			os.remove(root_directory + filename)
 
-
 		print filename,'done. Description:',description
+
+	descriptions = []
+	actors = []
+	image_names = []
+	#update the lists to be inserted
+	for filename in file_maps:
+		image_names.append(filename)
+		actors.append(file_maps[filename]["actor"])
+		descriptions.append(file_maps[filename]["description"])
+
 	db.insert_bulk(descriptions,actors,image_names)
 	print 'All memes inserted. Vanakkam Mahan.'
 		
