@@ -8,7 +8,7 @@ import cookielib
 import json
 import cv2
 import numpy as np
-import sys
+import sys,getopt
 #import cv
 #from PIL import Image
 
@@ -47,18 +47,21 @@ def convert_to_greyscale(directory,filename):
 
 def create_other_images(directory):
     files = os.listdir(directory)
-    pathname = os.path.dirname(sys.argv[0])  
-    faceCascade = cv2.CascadeClassifier(pathname+'/faceDetection/haarcascade_frontalface_default.xml')
+    pathname = os.path.dirname(sys.argv[0])
+    faceCascade = cv2.CascadeClassifier(pathname+'../backend/faceDetection/haarcascade_frontalface_default.xml')
     for filename in files:
         if "jpg" not in filename:
             continue
-        im1 = convert_to_greyscale(root_directory,filename)
-        faces= DetectFace(im1,faceCascade)
-        n = 0 
-        for (x,y,w,h) in faces:
-            crop_img = im1[y:y+h, x:x+w] # Crop from x, y, w, h -> 100, 200, 300, 400
-            cv2.imwrite( root_directory+"/"+filename.split(".jpg")[0]+"_crop"+str(n)+".jpg", crop_img )
-            n+=1
+        try:
+            im1 = convert_to_greyscale(directory,filename)
+            faces= DetectFace(im1,faceCascade)
+            n = 0
+            for (x,y,w,h) in faces:
+                crop_img = im1[y:y+h, x:x+w] # Crop from x, y, w, h -> 100, 200, 300, 400
+                cv2.imwrite( directory+"/"+filename.split(".jpg")[0]+"_crop"+str(n)+".jpg", crop_img )
+                n+=1
+        except:
+            continue
     print 'Created grayscale and face cropped images.'
 
 def download_images(actors,root_directory):
@@ -69,6 +72,7 @@ def download_images(actors,root_directory):
         DIR=root_directory
         header={'User-Agent':"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36"
         }
+        print 'loading images for '+actor+'....'
         soup = get_soup(url,header)
         ActualImages=[]# contains the link for Large original images, type of  image
         for a in soup.find_all("div",{"class":"rg_meta"}):
@@ -93,6 +97,8 @@ def download_images(actors,root_directory):
                 if len(Type)==0:
                     f = open(os.path.join(DIR , str(cntr)+".jpg"), 'wb')
                 else :
+                    if Type!="jpg":
+                        continue
                     f = open(os.path.join(DIR , str(cntr)+"."+Type), 'wb')
                 f.write(raw_img)
                 f.close()

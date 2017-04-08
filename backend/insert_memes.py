@@ -49,7 +49,7 @@ if __name__ == "__main__":
 	#create cropped and grayscale images
 	files = os.listdir(root_directory)
 	pathname = os.path.dirname(sys.argv[0]) 
-	faceCascade = cv2.CascadeClassifier(pathname+'/faceDetection/haarcascade_frontalface_default.xml')
+	faceCascade = cv2.CascadeClassifier(pathname+'faceDetection/haarcascade_frontalface_default.xml')
 	for filename in files:
 		if "jpg" not in filename:
 			continue
